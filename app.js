@@ -8,10 +8,23 @@ class Match {
 
     displayScore(){
         if (this.isDeuce()){
-            console.log("Duce");
             return "Deuce";
         }
-        console.log(this.playerOneScore);
+
+        if (this.hasAdvantage()){
+            return this.getHigherPlayer() + " has advantage"
+        }
+
+        if (this.checkWinner()){
+            return this.getHigherPlayer() + " won!"
+        }
+
+        if (this.playerOneScore === this.playerTwoScore){
+            let result = this.translateScore(this.playerOneScore) + "-" + "All";
+            console.log(result);
+            return result;
+        }
+
         let result = this.translateScore(this.playerOneScore)+ "-" + this.translateScore(this.playerTwoScore);
         console.log(result);
         return result
@@ -28,7 +41,7 @@ class Match {
             case 0:
                 return "Love";
             default:
-                return "do something else"
+                this.exceptionScore();
         }
     }
 
@@ -47,6 +60,32 @@ class Match {
         return this.playerOneScore >= 3 && this.playerOneScore === this.playerTwoScore? true : false;
     }
 
+    hasAdvantage(){
+        if (this.playerOneScore >=4 && this.playerOneScore - this.playerTwoScore === 1){
+            return true;
+        }
+        if (this.playerTwoScore >=4 && this.playerTwoScore - this.playerOneScore === 1) {
+            return true;
+        }
+    }
+
+    getHigherPlayer(){
+        return this.playerOneScore > this.playerTwoScore? this.playerOne : this.playerTwo;
+    }
+
+    checkWinner(){
+        if (this.playerOneScore >= 4 && this.playerOneScore - this.playerTwoScore >= 2){
+            return true;
+        }
+        if (this.playerTwoScore >=4 && this.playerTwoScore - this.playerOneScore >=2){
+            return true;
+        }
+    }
+
+    exceptionScore(){
+        return "This is not a valid score"
+    }
+
 }
 
 const match = new Match('Shanshan', 'Clemence');
@@ -56,7 +95,11 @@ match.playerOneScores();
 match.playerTwoScores();
 match.playerOneScores();
 match.playerTwoScores();
-match.displayScore();
+match.playerOneScores();
+match.playerTwoScores();
+match.playerTwoScores();
+match.playerTwoScores();
 
+match.displayScore();
 
 module.exports = Match;
